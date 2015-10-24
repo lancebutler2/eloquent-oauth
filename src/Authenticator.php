@@ -28,6 +28,9 @@ class Authenticator
         if ($this->identities->userExists($providerAlias, $details)) {
             return $this->getExistingUser($providerAlias, $details);
         }
+        if ($user = $this->getExistingUserByEmail($details->email)) {
+            return $user;
+        }
         return $this->users->create();
     }
 
@@ -35,6 +38,11 @@ class Authenticator
     {
         $this->users->store($user);
         $this->storeProviderIdentity($user, $providerAlias, $details);
+    }
+
+    protected function getExistingUserByEmail($email)
+    {
+        return $this->users->findByEmail($email);
     }
 
     protected function getExistingUser($providerAlias, $details)

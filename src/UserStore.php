@@ -1,5 +1,7 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
+use Acme\Models\Eloquent\User;
+
 class UserStore
 {
     protected $model;
@@ -18,6 +20,11 @@ class UserStore
     public function store($user)
     {
         return $user->save();
+    }
+
+    public function findByEmail($email)
+    {
+        return User::whereEmail($email)->first();
     }
 
     public function findByIdentity($identity)
